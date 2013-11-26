@@ -11,6 +11,7 @@ execfile(sys.argv[1])
 
 RenderView1.ViewSize = [300, 300]
 RenderView1.SMProxy.UpdateVTKObjects()
+RenderView1.StillRender()
 
 if not smtesting.DoRegressionTesting(RenderView1.SMProxy):
   # This will lead to VTK object leaks.
