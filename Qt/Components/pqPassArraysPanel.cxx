@@ -158,7 +158,7 @@ void pqPassArraysPanel::accept()
     }
 
   passArraysProxy->UpdateVTKObjects();
-  this->referenceProxy()->setModifiedState(pqProxy::UNMODIFIED);
+  //this->referenceProxy()->setModifiedState(pqProxy::UNMODIFIED);
   this->pqObjectPanel::accept();
 }
 
@@ -234,7 +234,7 @@ void pqPassArraysPanel::reset()
     }
   this->SelectorWidget->reset();
   this->pqObjectPanel::reset();
-  this->referenceProxy()->setModifiedState(pqProxy::UNMODIFIED);
+  //this->referenceProxy()->setModifiedState(pqProxy::UNMODIFIED);
 }
 
 //-----------------------------------------------------------------------------
