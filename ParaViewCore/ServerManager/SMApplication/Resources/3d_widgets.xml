@@ -429,6 +429,7 @@
             <Property name="LabelFormat" />
             <Property name="NumberOfLabels" />
             <Property name="AspectRatio" />
+            <Property name="ShowNormalizedValues" />
           </PropertyGroup>
         </ExposedProperties>
       </SubProxy>

@@ -69,6 +69,7 @@ vtkPVScalarBarActor::vtkPVScalarBarActor()
 {
   this->AspectRatio = 20.0;
   this->AutomaticLabelFormat = 1;
+  this->ShowNormalizedValues = 0;
   this->AnnotationTextScaling = 1;
 
   this->ScalarBarTexture = vtkTexture::New();
@@ -102,6 +103,7 @@ void vtkPVScalarBarActor::PrintSelf(ostream &os, vtkIndent indent)
   this->Superclass::PrintSelf(os, indent);
   os << indent << "AspectRatio: " << this->AspectRatio << endl;
   os << indent << "AutomaticLabelFormat: " << this->AutomaticLabelFormat <<endl;
+  os << indent << "ShowNormalizedValues: " << this->ShowNormalizedValues <<endl;
 }
 
 //-----------------------------------------------------------------------------
@@ -689,6 +691,11 @@ void vtkPVScalarBarActor::ConfigureTicks()
       continue;
       }
 
+    if (this->ShowNormalizedValues)
+      {
+      val = (i+1) / static_cast<double>(ticks.size()+1);
+      }
+
     double targetWidth = this->P->TickBox.Size[this->P->TL[0]];
     double targetHeight = this->P->TickBox.Size[this->P->TL[1]];
     if (this->Orientation == VTK_ORIENT_HORIZONTAL)
@@ -928,8 +935,16 @@ void vtkPVScalarBarActor::EditAnnotations()
     // Labels for min and max:
     SNPRINTF(minFmt, 63, "%%.%dg", minDig < 3 ? 3 : minDig);
     SNPRINTF(maxFmt, 63, "%%.%dg", maxDig < 3 ? 3 : maxDig);
-    SNPRINTF(minLabel, 63, minFmt, range[0]);
-    SNPRINTF(maxLabel, 63, maxFmt, range[1]);
+    if (this->ShowNormalizedValues)
+      {
+      SNPRINTF(minLabel, 63, minFmt, 0.0);
+      SNPRINTF(maxLabel, 63, maxFmt, 1.0);
+      }
+    else
+      {
+      SNPRINTF(minLabel, 63, minFmt, range[0]);
+      SNPRINTF(maxLabel, 63, maxFmt, range[1]);
+      }
 
     lut->GetColor(range[0], minFltCol.GetData());
     lut->GetColor(range[1], maxFltCol.GetData());

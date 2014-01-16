@@ -60,6 +60,12 @@ public:
   vtkBooleanMacro(AutomaticLabelFormat, int);
 
   // Description:
+  // If true, the displayed values are normalized.
+  vtkGetMacro(ShowNormalizedValues, int);
+  vtkSetMacro(ShowNormalizedValues, int);
+  vtkBooleanMacro(ShowNormalizedValues, int);
+
+  // Description:
   // Release any graphics resources that are being consumed by this actor.
   // The parameter window could be used to determine which graphic
   // resources to release.
@@ -120,6 +126,7 @@ protected:
 
   double AspectRatio;
   int AutomaticLabelFormat;
+  int ShowNormalizedValues;
   vtkTexture* ScalarBarTexture;
   vtkPolyData* TickMarks;
   vtkPolyDataMapper2D* TickMarksMapper;
