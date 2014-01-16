@@ -160,9 +160,20 @@ vtkStdString vtkPVPostFilter::DefaultComponentName(int componentNumber, int comp
     const char* titles[] = {"X", "Y", "Z"};
     return titles[componentNumber];
     }
+  else if (componentCount == 4)
+    {
+    const char* titles[] = {"11", "12", "21", "22"};
+    return titles[componentNumber];
+    }
   else if (componentCount == 6)
     {
-    const char* titles[] = {"XX", "YY", "ZZ", "XY", "YZ", "XZ"};
+    const char* titles[] = {"11", "22", "33", "12", "23", "13"};
+    // Assume this is a symmetric matrix.
+    return titles[componentNumber];
+    }
+  else if (componentCount == 9)
+    {
+    const char* titles[] = {"11", "12", "13", "21", "22", "23", "31", "32", "33"};
     // Assume this is a symmetric matrix.
     return titles[componentNumber];
     }
