@@ -35,6 +35,20 @@
         </Hints>
       </IntVectorProperty>
 
+      <IntVectorProperty name="WarningClientSideComputation"
+        number_of_elements="1"
+        default_values="1"
+        panel_visibility="advanced">
+        <Documentation>
+          Warn user when a representation is computed on the client side,
+          because this can potentially take a long time.
+        </Documentation>
+        <BooleanDomain name="bool" />
+        <Hints>
+          <SaveInQSettings />
+        </Hints>
+      </IntVectorProperty>
+
       <StringVectorProperty name="DefaultViewType"
         number_of_elements="1"
         default_values="RenderView"
@@ -233,6 +247,7 @@
       <PropertyGroup label="General Options">
         <Property name="ShowSplashScreen" />
         <Property name="CrashRecovery" />
+        <Property name="WarningClientSideComputation" />
       </PropertyGroup>
 
       <PropertyGroup label="Default View">

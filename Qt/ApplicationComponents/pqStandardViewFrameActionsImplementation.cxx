@@ -45,6 +45,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "pqRenderView.h"
 #include "pqRenderViewSelectionReaction.h"
 #include "pqServer.h"
+#include "pqSettings.h"
 #include "pqSpreadSheetViewDecorator.h"
 #include "pqSpreadSheetView.h"
 #include "pqToggleInteractionViewMode.h"
@@ -57,8 +58,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "vtkSMProxyDefinitionManager.h"
 #include "vtkSMProxy.h"
 #include "vtkSMSessionProxyManager.h"
+#include "vtkSMSourceProxy.h"
 
 #include <QMenu>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QSet>
 #include <QShortcut>
@@ -416,6 +419,38 @@ void pqStandardViewFrameActionsImplementation::invoked()
   QString type = osender->property("PV_VIEW_TYPE").toString();
   QString label = osender->property("PV_VIEW_LABEL").toString();
   QString command = osender->property("PV_COMMAND").toString();
+
+  if ( type.compare("ParallelCoordinatesChartView") == 0
+    || type.compare("PlotMatrixView") == 0 )
+    {
+    pqSettings* settings = pqApplicationCore::instance()->settings();
+    bool warnUser = settings->value("GeneralSettings.WarningClientSideRepresentation", true).toBool();
+
+    if (warnUser)
+      {
+      pqPipelineSource* source = pqActiveObjects::instance().activeSource();
+      if (source)
+        {
+        if (QString(source->getSourceProxy()->GetXMLName()).compare("PlotAttributes") == 0)
+          {
+          warnUser = false;
+          }
+        }
+      }
+
+    if (warnUser)
+      {
+      if (QMessageBox::warning(0,
+          "Potentially slow operation",
+          "This can potentially take a long time to complete\n"
+          "because the computation is done on the client side.\n"
+          "Are you sure you want to continue?",
+          QMessageBox::Yes |QMessageBox::No, QMessageBox::No) != QMessageBox::Yes)
+        {
+        return;
+        }
+      }
+    }
 
   BEGIN_UNDO_SET(QString("%1 %2").arg(command).arg(label));
   ViewType vtype;
